@@ -1,0 +1,15 @@
+ROOT ACCOUNT INFO
+
+Username: root
+Contact: dillangameplay31@gmail.com
+Role: headadmin
+User ID: 10
+
+Current password: NewPass123
+Reason: Password was force-reset locally on 2026-04-10.
+
+Stored password hash:
+scrypt:32768:8:1$8uT1KTWZhk3upYSG$281407d0fcaf37fe7c0a936219057c5cc2fb6df420aa910c51c5ee7df1c7e2a028f5feeecea1e852f6894ae70e41a3077938e55b68cf5c8d195ab38e4b10c041
+
+Note:
+The current root login credentials were intentionally changed and now use the password above.

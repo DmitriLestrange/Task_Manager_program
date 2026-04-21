@@ -1,0 +1,100 @@
+
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Task Manager</h1>
+                <p>Create an account or log in to see your tasks.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button id="showLoginBtn" class="tab-btn active">Log In</button>
+                <button id="showRegisterBtn" class="tab-btn">Create Account</button>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input id="loginUsername" type="text" autocomplete="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" type="password" autocomplete="current-password" required>
+                </div>
+
+                <button type="submit" class="primary-btn full-btn">Log In</button>
+
+                <button type="button" id="forgotPasswordBtn" class="ghost-btn full-btn">Forgot password?</button>
+
+                <div class="oauth-grid">
+                    <button type="button" id="googleLoginBtn" class="secondary-btn">Google</button>
+                    <button type="button" id="microsoftLoginBtn" class="secondary-btn">Microsoft</button>
+                </div>
+            </form>
+
+            <form id="registerForm" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input id="registerUsername" type="text" autocomplete="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerContact">Email or Phone Number</label>
+                    <input id="registerContact" type="text" autocomplete="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input id="registerPassword" type="password" autocomplete="new-password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirm Password</label>
+                    <input id="registerConfirmPassword" type="password" autocomplete="new-password" required>
+                </div>
+
+                <p class="auth-hint">Password must be at least 8 characters and include a number.</p>
+
+                <button type="submit" class="primary-btn full-btn">Create Account</button>
+            </form>
+
+            <form id="forgotPasswordRequestForm" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="resetContact">Email or Phone Number</label>
+                    <input id="resetContact" type="text" autocomplete="email" required>
+                </div>
+
+                <button type="submit" class="primary-btn full-btn">Generate Reset Token</button>
+                <button type="button" id="backToLoginBtn" class="ghost-btn full-btn">Back to login</button>
+            </form>
+
+            <form id="forgotPasswordResetForm" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="resetContactConfirm">Email or Phone Number</label>
+                    <input id="resetContactConfirm" type="text" autocomplete="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="resetToken">Reset Token</label>
+                    <input id="resetToken" type="text" autocomplete="one-time-code" required>
+                </div>
+
+                <p id="resetTokenInfo" class="auth-hint hidden"></p>
+
+                <div class="form-group">
+                    <label for="resetPassword">New Password</label>
+                    <input id="resetPassword" type="password" autocomplete="new-password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="resetConfirmPassword">Confirm New Password</label>
+                    <input id="resetConfirmPassword" type="password" autocomplete="new-password" required>
+                </div>
+
+                <p class="auth-hint">Password must be at least 8 characters and include a number.</p>
+
+                <button type="submit" class="primary-btn full-btn">Reset Password</button>
+                <button type="button" id="requestAnotherTokenBtn" class="ghost-btn full-btn">Request another token</button>
+            </form>
+        </div>
+    </div>

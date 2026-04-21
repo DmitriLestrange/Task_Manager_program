@@ -1,0 +1,352 @@
+[
+  {
+    "version": "1.19.9",
+    "date": "2026-04-17",
+    "description": "Cleaned up obsolete startup and debug leftovers after a full program checkup.",
+    "highlights": [
+      "Disabled the old boot-token root auto-login path so legacy launcher links now fall back to the regular login page.",
+      "Removed unused startup-token helper code while keeping normal authentication, sessions, password reset, and admin behavior intact.",
+      "Quieted Konami key-by-key console logging unless local debug mode is explicitly enabled."
+    ]
+  },
+  {
+    "version": "1.19.8",
+    "date": "2026-04-15",
+    "description": "Fixed safe shutdown for the Windows stop launcher.",
+    "highlights": [
+      "The stop launcher now finds and stops the actual Task Manager Python server process instead of only the starter console.",
+      "The server now runs without Flask's debug reloader so one-click start and stop process tracking stays reliable.",
+      "Shutdown still leaves saved tasks, users, messages, uploads, and database files untouched."
+    ]
+  },
+  {
+    "version": "1.19.7",
+    "date": "2026-04-15",
+    "description": "Encoding Fix",
+    "highlights": [
+      "Fixed mojibake issues across UI glyphs and verified translation text remains valid UTF-8.",
+      "Ensured UTF-8 encoding for the main template, split JavaScript translation files, CSS, and update-log data.",
+      "Corrected translation/static rendering checks so Russian, special characters, and UI labels display cleanly."
+    ]
+  },
+  {
+    "version": "1.19.6",
+    "date": "2026-04-15",
+    "description": "Simplified local startup so launchers open the normal login page.",
+    "highlights": [
+      "Removed the launcher dependency on special boot-token root-login links during normal startup.",
+      "The local launcher now starts on localhost, while the LAN launcher starts the app for same-network access and shows the connection address.",
+      "Updated the quick-start guide so users log in through the regular authentication page and get clearer startup help."
+    ]
+  },
+  {
+    "version": "1.19.5",
+    "date": "2026-04-15",
+    "description": "Improved startup token login fallback behavior.",
+    "highlights": [
+      "Kept secure boot-token validation for automatic root login when the launcher starts a fresh server.",
+      "Existing-server launches now open the normal homepage instead of trying a token that may belong to a previous server process.",
+      "Failed boot-login attempts now fall back to the regular login page instead of showing a confusing invalid-token JSON message."
+    ]
+  },
+  {
+    "version": "1.19.4",
+    "date": "2026-04-15",
+    "description": "Improved text-to-speech language and voice selection.",
+    "highlights": [
+      "TTS now follows the currently selected app language with locale mappings for English, Russian, Danish, Norwegian, Swedish, German, Ukrainian, and Polish.",
+      "Pirate, LOLCAT, and Minecraft style use a graceful English fallback voice when no themed browser voice is available.",
+      "Settings now shows the active TTS voice while keeping Alt + R and read-aloud buttons working."
+    ]
+  },
+  {
+    "version": "1.19.3",
+    "date": "2026-04-15",
+    "description": "Fixed translation encoding after the frontend language data split.",
+    "highlights": [
+      "Restored Cyrillic, Scandinavian, German, Polish, Ukrainian, and emoji language metadata from mojibake back to valid UTF-8.",
+      "Kept the existing split translation loader and language switching behavior intact.",
+      "Verified the main template declares UTF-8 and the translation source is saved as UTF-8."
+    ]
+  },
+  {
+    "version": "1.19.2",
+    "date": "2026-04-10",
+    "description": "Added a one-click safe stop file for shutting down the local Task Manager server.",
+    "highlights": [
+      "The launcher now records the started server PID so the correct Task Manager process can be stopped later.",
+      "Added a clickable Stop Task Manager file that shuts down the recorded local server without editing saved tasks or database contents.",
+      "Improved the local Windows workflow so starting and stopping the app is simpler for non-technical classroom use."
+    ]
+  },
+  {
+    "version": "1.19.1",
+    "date": "2026-04-10",
+    "description": "Fixed the Windows startup flow so the app waits for the server, opens reliably, and logs into the root account automatically on boot.",
+    "highlights": [
+      "The launcher now starts the Flask server first, waits until it responds, and only then opens the browser.",
+      "Added a one-time startup root-login route secured by a boot token so the opened browser lands inside the app instead of on a blank page.",
+      "Kept the normal login system unchanged while making the local startup flow much more reliable for classroom use."
+    ]
+  },
+  {
+    "version": "1.19.0",
+    "date": "2026-04-10",
+    "description": "Started a safe modular refactor to reduce file size and keep the project easier to maintain.",
+    "highlights": [
+      "Split the main template into reusable partials while preserving the existing page structure and element hooks.",
+      "Moved shared database/bootstrap helpers and update-log data out of the main Flask file into backend modules and data files.",
+      "Split the frontend runtime into smaller script files and stabilized the active asset loading path so the app still boots cleanly."
+    ]
+  },
+  {
+    "version": "1.18.7",
+    "date": "2026-04-09",
+    "description": "Added reusable task templates for faster task creation.",
+    "highlights": [
+      "Users can now save personal task templates with reusable subtasks and optional default settings.",
+      "The task creator can start from scratch or apply a template to preload subtasks and defaults.",
+      "Templates stay separate from real tasks so teams can reuse them without cluttering the main task list."
+    ]
+  },
+  {
+    "version": "1.18.6",
+    "date": "2026-04-09",
+    "description": "Added one-click Windows launchers for easier local startup.",
+    "highlights": [
+      "Added a simple double-click launcher that opens the project in the right folder and starts the app.",
+      "Added dependency checks with optional virtual-environment activation when a venv is present.",
+      "Added a second launcher and quick-start guide for local network use without changing app behavior."
+    ]
+  },
+  {
+    "version": "1.18.3",
+    "date": "2026-04-09",
+    "description": "Added a visible private messages workspace with direct-message shortcuts from user profiles.",
+    "highlights": [
+      "Added a dedicated private messages page with existing chats, a new-chat action, and live replies.",
+      "Added profile-page Message buttons that reopen an existing direct chat or create one when needed.",
+      "Kept self-messaging blocked while preserving real-time delivery and custom chat styling."
+    ]
+  },
+  {
+    "version": "1.18.1",
+    "date": "2026-04-08",
+    "description": "Added a dedicated completed tasks view with user-based search.",
+    "highlights": [
+      "Added a completed tasks page that shows archived titles, contributors, completers, and timestamps.",
+      "Added user search so teams can quickly view work someone completed or helped finish.",
+      "Kept completion history tied to the confirmed-completion flow instead of unfinished 100 percent tasks."
+    ]
+  },
+  {
+    "version": "1.18.0",
+    "date": "2026-04-08",
+    "description": "Added task material allocations, material-based subtask requirements, and materials usage analytics.",
+    "highlights": [
+      "Tasks can now reserve total material pools that subtasks must stay within.",
+      "Subtasks can use a materials-needed requirement with safe backend validation for remaining stock.",
+      "Added materials usage analytics over time so admins can track which resources were consumed."
+    ]
+  },
+  {
+    "version": "1.17.0",
+    "date": "2026-03-27",
+    "description": "Added subtask requirements with file submission support.",
+    "highlights": [
+      "Subtasks can now require a file submission before they can be marked complete.",
+      "Added safe backend storage for requirement submissions with room for more requirement types later.",
+      "Added visible requirement status so teams can see which subtasks are blocked or satisfied."
+    ]
+  },
+  {
+    "version": "1.16.9",
+    "date": "2026-03-27",
+    "description": "Added multi-file task attachments with safe metadata storage.",
+    "highlights": [
+      "Tasks can now store multiple attached files of any type with safe upload metadata.",
+      "Added create and edit support for attachments without breaking existing task flows.",
+      "Added in-task download links so attachments stay easy to access from task details."
+    ]
+  },
+  {
+    "version": "1.16.4",
+    "date": "2026-03-26",
+    "description": "Added global task visibility with backend-enforced edit modes.",
+    "highlights": [
+      "Tasks can now be shared globally so every user can see them.",
+      "Global tasks now support either everyone-edit mode or assigned-users-and-admins edit mode.",
+      "Kept assignment logic intact while enforcing global task permissions in backend task and subtask routes."
+    ]
+  },
+  {
+    "version": "1.16.3",
+    "date": "2026-03-26",
+    "description": "Added task image support with main images and banners.",
+    "highlights": [
+      "Added safe task image storage for main card images and optional banner art.",
+      "Added create and edit support for task images without changing core task flows.",
+      "Improved task cards so images display cleanly without cluttering compact mode."
+    ]
+  },
+  {
+    "version": "1.16.1",
+    "date": "2026-03-26",
+    "description": "Fixed user profile completion charts so completed history renders reliably.",
+    "highlights": [
+      "Aligned user profile chart buckets with stored completion timestamps across all time filters.",
+      "Improved completed-history chart rendering for single completed tasks and sparse datasets.",
+      "Kept admin analytics behavior and admin-only access rules unchanged."
+    ]
+  },
+  {
+    "version": "1.16.0",
+    "date": "2026-03-26",
+    "description": "Added task completion confirmation before archiving completed work.",
+    "highlights": [
+      "Tasks now wait for explicit completion confirmation instead of being counted immediately at 100 percent.",
+      "Confirmed tasks move into completed history and live completion stats only after approval.",
+      "Kept active 100 percent tasks editable until someone confirms completion."
+    ]
+  },
+  {
+    "version": "1.15.0",
+    "date": "2026-03-25",
+    "description": "Added clickable user profile pages from user lists.",
+    "highlights": [
+      "Added dedicated user detail pages with avatars, role badges, and task stats.",
+      "Added per-user completed-task charts with selectable time ranges.",
+      "Kept contact details permission-aware so admins and the owner can see them safely."
+    ]
+  },
+  {
+    "version": "1.14.0",
+    "date": "2026-03-25",
+    "description": "Added an admin-only analytics dashboard.",
+    "highlights": [
+      "Added backend-enforced admin-only analytics access for admins and head admins.",
+      "Added analytics totals for users, tasks, completed tasks, and overdue tasks.",
+      "Added completed-tasks-over-time charts with selectable time windows."
+    ]
+  },
+  {
+    "version": "1.13.0",
+    "date": "2026-03-25",
+    "description": "Simplified profile settings and secured account deletion flow.",
+    "highlights": [
+      "Removed password requirements for normal profile edits like username, contact, and profile picture changes.",
+      "Moved account deletion into a clearer confirmation flow with explicit password entry.",
+      "Kept root account deletion blocked in the backend."
+    ]
+  },
+  {
+    "version": "1.12.0",
+    "date": "2026-03-25",
+    "description": "Improved admin roles and root account protection.",
+    "highlights": [
+      "Added head admin handling for root with secure backend enforcement.",
+      "Added root-only admin promotion and demotion controls.",
+      "Added admin and head admin badges across chat, activity, and admin user views."
+    ]
+  },
+  {
+    "version": "1.11.0",
+    "date": "2026-03-25",
+    "description": "Added language system and compact mode.",
+    "highlights": [
+      "Added multi-language UI support with live switching and saved language preference.",
+      "Added compact mode to fit more tasks on screen instantly.",
+      "Improved reusable frontend translation hooks for future updates."
+    ]
+  },
+  {
+    "version": "1.10.0",
+    "date": "2026-03-25",
+    "description": "Added admin system and account management.",
+    "highlights": [
+      "Added root admin privileges and admin-only route protection.",
+      "Added admin panel with user management tools.",
+      "Added account deletion flow with password confirmation and safe cleanup."
+    ]
+  },
+  {
+    "version": "1.9.0",
+    "date": "2026-03-25",
+    "description": "Added real-time updates.",
+    "highlights": [
+      "Added Socket.IO powered live task and chat synchronization.",
+      "Added real-time activity feed updates.",
+      "Improved instant UI updates without full reloads."
+    ]
+  },
+  {
+    "version": "1.8.0",
+    "date": "2026-03-20",
+    "description": "Added chat system.",
+    "highlights": [
+      "Added task chat per task card.",
+      "Added mentions, mention highlighting, and mention notifications.",
+      "Added username and timestamp display in chat messages."
+    ]
+  },
+  {
+    "version": "1.7.0",
+    "date": "2026-03-20",
+    "description": "Added user accounts.",
+    "highlights": [
+      "Added login, registration, and forgot-password flow.",
+      "Added profile settings, profile pictures, and password changes.",
+      "Added contact-based verification support."
+    ]
+  },
+  {
+    "version": "1.6.0",
+    "date": "2026-03-18",
+    "description": "Added Konami system.",
+    "highlights": [
+      "Added Konami code easter egg system with multiple effects.",
+      "Added confetti, cat gifs, shake, chaos, and popup effects.",
+      "Added fun personality reactions for task creation."
+    ]
+  },
+  {
+    "version": "1.5.0",
+    "date": "2026-03-18",
+    "description": "Added settings.",
+    "highlights": [
+      "Added theme, reminders, sounds, and compact layout controls.",
+      "Added upcoming deadline threshold configuration.",
+      "Improved dashboard customization and settings UX."
+    ]
+  },
+  {
+    "version": "1.4.0",
+    "date": "2026-03-17",
+    "description": "Added progress bar improvements.",
+    "highlights": [
+      "Added task progress bar rendering.",
+      "Added overdue and upcoming deadline sections.",
+      "Added completed-task lifecycle groundwork."
+    ]
+  },
+  {
+    "version": "1.3.0",
+    "date": "2026-03-15",
+    "description": "Added subtasks.",
+    "highlights": [
+      "Added subtask creation and completion tracking.",
+      "Added subtask deadlines and priorities.",
+      "Added drag-and-drop subtask reordering."
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "date": "2026-03-13",
+    "description": "Initial task system release.",
+    "highlights": [
+      "Added the core task system.",
+      "Added task creation, editing, and deletion.",
+      "Added deadlines and priorities."
+    ]
+  }
+]
