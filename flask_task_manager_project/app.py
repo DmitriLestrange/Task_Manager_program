@@ -3642,4 +3642,18 @@ def admin_update_user_role(target_user_id: int):
 if __name__ == "__main__":
     ensure_db()
     host = os.environ.get("TASK_MANAGER_HOST", "127.0.0.1")
-    socketio.run(app, host=host, port=5000, debug=True, use_reloader=False)
+    import os
+
+if __name__ == "__main__":
+    host = "0.0.0.0"
+    port = int(os.environ.get("PORT", 5000))
+    debug_mode = False
+
+    socketio.run(
+        app,
+        host=host,
+        port=port,
+        debug=debug_mode,
+        use_reloader=False,
+        allow_unsafe_werkzeug=True,
+    )
