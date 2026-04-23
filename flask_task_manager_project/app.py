@@ -1448,6 +1448,30 @@ def emit_private_message_sent(
         socketio.emit("private_message_sent", payload, room=f"user-{user_id}")
 
 
+def emit_private_typing_event(event_name: str, conversation_id: int, user_id: int) -> None:
+    with get_db() as conn:
+        conversation = get_private_conversation_row_for_user(conn, conversation_id, user_id)
+        if not conversation:
+            return
+        user = conn.execute(
+            "SELECT id, username FROM users WHERE id = ?",
+            (user_id,),
+        ).fetchone()
+        if not user:
+            return
+        audience_user_ids = get_private_conversation_member_ids(conn, conversation_id)
+
+    payload = {
+        "conversation_id": conversation_id,
+        "user_id": int(user["id"]),
+        "username": user["username"],
+    }
+    for member_user_id in sorted(set(audience_user_ids)):
+        if int(member_user_id) == int(user_id):
+            continue
+        socketio.emit(event_name, payload, room=f"user-{member_user_id}")
+
+
 @socketio.on("connect")
 def handle_socket_connect():
     ensure_db()
@@ -1491,6 +1515,36 @@ def handle_socket_connect():
 
     for row in private_rows:
         join_room(f"private-chat-{int(row['conversation_id'])}")
+
+
+@socketio.on("dm_typing_started")
+def handle_dm_typing_started(data):
+    ensure_db()
+    if "user_id" not in session:
+        disconnect()
+        return
+
+    try:
+        conversation_id = int((data or {}).get("conversation_id"))
+    except (TypeError, ValueError):
+        return
+
+    emit_private_typing_event("dm_typing_started", conversation_id, int(session["user_id"]))
+
+
+@socketio.on("dm_typing_stopped")
+def handle_dm_typing_stopped(data):
+    ensure_db()
+    if "user_id" not in session:
+        disconnect()
+        return
+
+    try:
+        conversation_id = int((data or {}).get("conversation_id"))
+    except (TypeError, ValueError):
+        return
+
+    emit_private_typing_event("dm_typing_stopped", conversation_id, int(session["user_id"]))
 
 
 def extract_message_mentions(conn: sqlite3.Connection, content: str) -> list[str]:
@@ -3641,19 +3695,13 @@ def admin_update_user_role(target_user_id: int):
 
 if __name__ == "__main__":
     ensure_db()
-    host = os.environ.get("TASK_MANAGER_HOST", "127.0.0.1")
-    import os
-
-if __name__ == "__main__":
     host = "0.0.0.0"
     port = int(os.environ.get("PORT", 5000))
-    debug_mode = False
-
     socketio.run(
         app,
         host=host,
         port=port,
-        debug=debug_mode,
+        debug=False,
         use_reloader=False,
         allow_unsafe_werkzeug=True,
     )
