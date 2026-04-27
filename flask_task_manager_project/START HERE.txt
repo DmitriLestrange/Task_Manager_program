@@ -1,0 +1,27 @@
+TASK MANAGER - QUICK START
+
+Local use on this computer:
+1. Double-click:
+   Start Task Manager.bat
+2. The launcher opens this project folder, activates `.venv` or `venv` if present, installs missing packages if needed, starts the server, and opens:
+   http://127.0.0.1:5000/
+3. Log in normally on the login page.
+
+Same-network / classroom use:
+1. Double-click:
+   Start Task Manager (LAN).bat
+2. The launcher detects this computer's current network IP, starts the server for LAN access, and opens the normal homepage.
+3. Other devices on the same network can connect using the address shown in the launcher, for example:
+   http://192.168.x.x:5000/
+4. If other devices cannot connect, allow Python through Windows Firewall when prompted.
+
+Stopping safely:
+1. Double-click:
+   Stop Task Manager.bat
+2. The stop file only stops the recorded Task Manager server process. It does not edit saved tasks, users, messages, or database files.
+
+Notes:
+- Startup no longer uses a special boot-token login link.
+- Root and all other users log in through the normal authentication page.
+- Keep the server console window open while the app is running.
+- If startup fails, read the message in the launcher and check the server console window for details.

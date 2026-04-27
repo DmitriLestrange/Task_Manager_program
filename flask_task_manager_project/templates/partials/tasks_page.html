@@ -1,0 +1,225 @@
+            <section id="tasksPage" class="page">
+                <section class="card creator-card">
+                    <div class="section-head creator-head">
+                        <div>
+                            <h2>Create Task</h2>
+                            <p id="createTaskHint">Shortcuts: N for new task, / for search, Esc closes panels, Alt + R reads selected text</p>
+                        </div>
+                        <button type="button" id="toggleTaskCreatorBtn" class="ghost-btn">Open creator</button>
+                    </div>
+
+                    <form id="taskForm" class="task-form creator-form collapsed">
+                        <div class="creator-template-bar">
+                            <div class="form-group">
+                                <label for="taskTemplateSelect">Template</label>
+                                <select id="taskTemplateSelect" name="taskTemplate">
+                                    <option value="">Start from scratch</option>
+                                </select>
+                            </div>
+                            <button type="button" id="openTaskTemplateModalBtn" class="secondary-btn">Manage templates</button>
+                        </div>
+
+                        <div id="taskTemplatePreview" class="template-preview-card hidden"></div>
+
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="taskTitle">Task title</label>
+                                <input id="taskTitle" name="title" type="text" placeholder="Example: Launch update" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskDeadline">Deadline</label>
+                                <input id="taskDeadline" name="deadline" type="text" placeholder="Choose date and time">
+                            </div>
+                        </div>
+
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label for="taskDescription">Description</label>
+                                <textarea id="taskDescription" name="description" rows="3" placeholder="Optional description"></textarea>
+                            </div>
+
+                            <div class="stack-group">
+                                <div class="form-group">
+                                    <label for="taskPriority">Priority</label>
+                                    <select id="taskPriority" name="priority">
+                                        <option value="low">Low</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="taskMembers">Assign users</label>
+                                    <input id="taskMembers" name="members" type="hidden">
+                                    <div id="selectedMembers" class="selected-members">
+                                        <span class="empty-chip">Only you</span>
+                                    </div>
+                                    <button type="button" id="openAssignUsersBtn" class="secondary-btn">Choose Users</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="creator-advanced-wrap">
+                            <button type="button" id="toggleAdvancedTaskSettingsBtn" class="ghost-btn creator-advanced-toggle">Advanced settings</button>
+
+                            <div id="advancedTaskSettings" class="creator-advanced-panel hidden">
+                                <div class="task-scope-panel">
+                                    <label class="custom-check setting-row">
+                                        <input type="checkbox" id="taskIsGlobal">
+                                        <span class="checkmark"></span>
+                                        <span>Global task</span>
+                                    </label>
+
+                                    <div class="form-group">
+                                        <label for="taskGlobalEditMode">Global edit mode</label>
+                                        <select id="taskGlobalEditMode" name="globalEditMode">
+                                            <option value="members">Visible to everyone, editable by assigned users/admins</option>
+                                            <option value="everyone">Visible and editable by everyone</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="task-image-grid">
+                                    <div class="form-group">
+                                        <label for="taskMainImageInput">Main image</label>
+                                        <div class="image-upload-card">
+                                            <img id="taskMainImagePreview" class="task-upload-preview hidden" alt="Main task image preview">
+                                            <div class="image-upload-actions">
+                                                <label class="secondary-btn upload-btn" for="taskMainImageInput">Choose main image</label>
+                                                <button type="button" id="clearTaskMainImageBtn" class="ghost-btn hidden">Remove</button>
+                                            </div>
+                                            <input id="taskMainImageInput" type="file" accept="image/*" class="hidden">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="taskBannerImageInput">Banner image</label>
+                                        <div class="image-upload-card">
+                                            <img id="taskBannerImagePreview" class="task-upload-preview task-banner-preview hidden" alt="Task banner image preview">
+                                            <div class="image-upload-actions">
+                                                <label class="secondary-btn upload-btn" for="taskBannerImageInput">Choose banner image</label>
+                                                <button type="button" id="clearTaskBannerImageBtn" class="ghost-btn hidden">Remove</button>
+                                            </div>
+                                            <input id="taskBannerImageInput" type="file" accept="image/*" class="hidden">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="taskAttachmentsInput">Attachments</label>
+                                    <div class="image-upload-card attachment-upload-card">
+                                        <div class="image-upload-actions">
+                                            <label class="secondary-btn upload-btn" for="taskAttachmentsInput">Choose files</label>
+                                        </div>
+                                        <input id="taskAttachmentsInput" type="file" class="hidden" multiple>
+                                        <div id="taskAttachmentsList" class="attachment-upload-list">
+                                            <div class="empty-state">No attachments selected.</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="material-config-card">
+                                    <div class="section-head material-config-head">
+                                        <div>
+                                            <h4 id="taskMaterialsHeading">Task materials</h4>
+                                            <p id="taskMaterialsHint">Set the total pool this task can use. Subtasks can only reserve from what remains.</p>
+                                        </div>
+                                        <button type="button" id="addTaskMaterialBtn" class="ghost-btn">Add material</button>
+                                    </div>
+                                    <div id="taskMaterialsList" class="material-config-list"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="primary-btn">Add Task</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="toolbar">
+                    <div class="task-filter-bar">
+                        <div class="search-wrap">
+                            <input id="searchInput" type="text" placeholder="Search tasks and subtasks">
+                        </div>
+
+                        <div class="task-filter-grid">
+                            <div class="form-group">
+                                <label for="taskFilterPriority">Priority</label>
+                                <select id="taskFilterPriority">
+                                    <option value="all">All priorities</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskFilterDeadlineDate">Deadline date</label>
+                                <input id="taskFilterDeadlineDate" type="date">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskFilterAssignedUser">Assigned user</label>
+                                <select id="taskFilterAssignedUser">
+                                    <option value="all">All users</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskFilterGlobalMode">Scope</label>
+                                <select id="taskFilterGlobalMode">
+                                    <option value="all">All tasks</option>
+                                    <option value="global">Global only</option>
+                                    <option value="assigned">Assigned only</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskFilterCompletion">Completion</label>
+                                <select id="taskFilterCompletion">
+                                    <option value="all">All states</option>
+                                    <option value="uncompleted">Uncompleted</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskSortBy">Sort by</label>
+                                <select id="taskSortBy">
+                                    <option value="created_desc">Creation date</option>
+                                    <option value="deadline">Deadline</option>
+                                    <option value="priority">Priority</option>
+                                    <option value="alphabetical">Alphabetical</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="task-filter-actions">
+                            <label class="custom-check setting-row">
+                                <input type="checkbox" id="taskFilterInvert">
+                                <span class="checkmark"></span>
+                                <span>Invert filters</span>
+                            </label>
+
+                            <label class="custom-check setting-row">
+                                <input type="checkbox" id="taskSortReverse">
+                                <span class="checkmark"></span>
+                                <span>Reverse sort</span>
+                            </label>
+
+                            <button type="button" id="clearTaskFiltersBtn" class="ghost-btn">Clear filters</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tasks-section">
+                    <div class="section-head">
+                        <h2>Your Tasks</h2>
+                        <p id="taskCountLabel">0 tasks</p>
+                    </div>
+
+                    <div id="taskList" class="task-list"></div>
+                </section>
+            </section>

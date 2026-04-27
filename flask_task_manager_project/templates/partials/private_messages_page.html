@@ -1,0 +1,40 @@
+            <section id="privateMessagesPage" class="page">
+                <div class="section-head section-head-top">
+                    <div>
+                        <h2>Private Messages</h2>
+                        <p>Direct messages and group chats in one focused space.</p>
+                        <p id="privateMessagesTtsHint" class="page-shortcut-hint">Tip: highlight text and press Alt + R to read it aloud.</p>
+                    </div>
+                    <button type="button" id="startPrivateChatBtn" class="secondary-btn">Start New Chat</button>
+                </div>
+
+                <section class="private-messages-layout">
+                    <article class="card private-chat-sidebar">
+                        <div class="section-head">
+                            <div>
+                                <h3 id="privateChatListHeading">Chats</h3>
+                                <p id="privateChatListHint">Existing direct messages and any group chats you are part of.</p>
+                            </div>
+                        </div>
+                        <div id="privateChatList" class="private-chat-list"></div>
+                    </article>
+
+                    <article class="card private-chat-panel">
+                        <div class="section-head private-chat-panel-head">
+                            <div>
+                                <h3 id="privateChatTitleHeading">Select a chat</h3>
+                                <p id="privateChatTitleSubheading">Pick a conversation from the left or start a new one.</p>
+                            </div>
+                        </div>
+
+                        <div id="privateChatMessages" class="task-chat-list private-chat-messages">
+                            <div class="empty-state">No private chat selected yet.</div>
+                        </div>
+
+                        <form id="privateChatForm" class="task-chat-form private-chat-form">
+                            <input type="text" id="privateChatInput" name="privateMessageContent" placeholder="Write a private message" maxlength="500" required>
+                            <button type="submit" class="secondary-btn">Send</button>
+                        </form>
+                    </article>
+                </section>
+            </section>
