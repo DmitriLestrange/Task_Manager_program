@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Flask / local database
+instance/
+*.db
+*.db-wal
+*.db-shm
+
+# Runtime files
+task_manager_server.pid
+
+# Virtual environments
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Uploaded files (optional, if you don’t want them on GitHub)
+static/uploads/
