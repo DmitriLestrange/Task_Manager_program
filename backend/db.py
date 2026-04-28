@@ -56,8 +56,8 @@ def _translate_postgres_sql(sql: str) -> tuple[str, bool]:
         flags=re.IGNORECASE,
     )
     translated = re.sub(
-        r"ORDER\s+BY\s+([\w\.]+)\s+COLLATE\s+NOCASE\s+(ASC|DESC)",
-        lambda match: f"ORDER BY LOWER({match.group(1)}) {match.group(2)}",
+        r"(\b[\w\.]+)\s+COLLATE\s+NOCASE(?:\s+(ASC|DESC))?",
+        lambda match: f"LOWER({match.group(1)}) {match.group(2) or ''}".rstrip(),
         translated,
         flags=re.IGNORECASE,
     )
@@ -105,6 +105,41 @@ class PostgresCursorCompat:
         return rows
 
 
+class SQLiteConnectionCompat:
+    def __init__(self, connection: sqlite3.Connection):
+        self._conn = connection
+
+    def execute(self, sql: str, params: tuple[Any, ...] | list[Any] | None = None) -> sqlite3.Cursor:
+        if params is None:
+            return self._conn.execute(sql)
+        return self._conn.execute(sql, params)
+
+    def executemany(self, sql: str, seq_of_params: list[tuple[Any, ...]] | tuple[tuple[Any, ...], ...]) -> sqlite3.Cursor:
+        return self._conn.executemany(sql, seq_of_params)
+
+    def executescript(self, sql_script: str) -> sqlite3.Cursor:
+        return self._conn.executescript(sql_script)
+
+    def commit(self) -> None:
+        self._conn.commit()
+
+    def rollback(self) -> None:
+        self._conn.rollback()
+
+    def close(self) -> None:
+        self._conn.close()
+
+    def __enter__(self) -> "SQLiteConnectionCompat":
+        return self
+
+    def __exit__(self, exc_type, exc, tb) -> None:
+        if exc_type is None:
+            self.commit()
+        else:
+            self.rollback()
+        self.close()
+
+
 class PostgresConnectionCompat:
     def __init__(self, connection: Any):
         self._conn = connection
@@ -114,10 +149,10 @@ class PostgresConnectionCompat:
         params = tuple(params or ())
         table_match = re.match(r"^\s*INSERT\s+INTO\s+([a-z_]+)\b", translated, re.IGNORECASE)
         wants_lastrowid = bool(table_match and table_match.group(1).lower() in TABLES_WITH_SERIAL_IDS and " RETURNING " not in translated.upper())
-        if wants_lastrowid:
-            translated = f"{translated} RETURNING id"
         if ignore_insert:
             translated = f"{translated} ON CONFLICT DO NOTHING"
+        if wants_lastrowid:
+            translated = f"{translated} RETURNING id"
 
         cursor = self._conn.cursor()
         cursor.execute(translated, params)
@@ -187,11 +222,11 @@ def _get_table_columns(conn: Any, table_name: str) -> set[str]:
     return {row["column_name"] for row in rows}
 
 
-def get_db() -> sqlite3.Connection | PostgresConnectionCompat:
+def get_db() -> SQLiteConnectionCompat | PostgresConnectionCompat:
     if IS_POSTGRES:
         if psycopg is None:
             raise RuntimeError("PostgreSQL support requires psycopg to be installed.")
-        connection = psycopg.connect(DATABASE_URL, row_factory=dict_row)
+        connection = psycopg.connect(DATABASE_URL, row_factory=dict_row, connect_timeout=10)
         return PostgresConnectionCompat(connection)
 
     DB_DIR.mkdir(exist_ok=True)
@@ -200,7 +235,7 @@ def get_db() -> sqlite3.Connection | PostgresConnectionCompat:
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL")
     conn.execute("PRAGMA busy_timeout = 10000")
-    return conn
+    return SQLiteConnectionCompat(conn)
 
 
 def init_db() -> None:

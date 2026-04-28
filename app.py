@@ -19,7 +19,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from backend.db import ensure_db, get_db, init_db
 from backend.shared import (
     BASE_DIR,
-    DB_PATH,
     PROFILE_UPLOAD_DIR,
     SUBTASK_REQUIREMENT_DIR,
     TASK_ATTACHMENT_DIR,
@@ -46,10 +45,7 @@ def add_utf8_charset(response):
     return response
 
 
-SESSION_SENSITIVE_PATH_PREFIXES = (
-    "/api/auth/",
-    "/api/profile",
-)
+SESSION_SENSITIVE_PATH_PREFIXES = ("/api/",)
 
 
 @app.after_request
@@ -76,6 +72,13 @@ def clear_session_response(payload: dict[str, Any], *, status_code: int = 200):
         samesite=app.config.get("SESSION_COOKIE_SAMESITE", "Lax"),
     )
     return response
+
+
+def set_authenticated_session(user_row: Any) -> None:
+    session.clear()
+    session["user_id"] = int(user_row["id"])
+    session["username"] = user_row["username"]
+    session.modified = True
 
 
 def login_required(fn):
@@ -1707,9 +1710,7 @@ def register():
             (user_id,),
         ).fetchone()
 
-    session.clear()
-    session["user_id"] = user_id
-    session["username"] = username
+    set_authenticated_session(user)
     return jsonify({"user": serialize_user(user)}), 201
 
 
@@ -1730,9 +1731,7 @@ def login():
     if not user or not check_password_hash(user["password_hash"], password):
         return jsonify({"error": "Invalid username or password."}), 401
 
-    session.clear()
-    session["user_id"] = user["id"]
-    session["username"] = user["username"]
+    set_authenticated_session(user)
     return jsonify({"user": serialize_user(user)})
 
 
@@ -1846,7 +1845,6 @@ def reset_password():
 
 
 @app.route("/api/auth/logout", methods=["POST"])
-@login_required
 def logout():
     return clear_session_response({"message": "Logged out."})
 

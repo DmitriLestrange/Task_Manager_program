@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.20.2",
+    "date": "2026-04-28",
+    "description": "Tightened production database and session handling for Render deployments.",
+    "highlights": [
+      "Database access now uses the shared helper consistently for PostgreSQL and local SQLite, with SQLite connections closing cleanly after each request block.",
+      "Logout now clears the Flask session and session cookie even when the browser has stale or missing auth state.",
+      "All API responses now send no-store cache headers so user-specific data is not reused across browser sessions."
+    ]
+  },
+  {
     "version": "1.20.1",
     "date": "2026-04-24",
     "description": "Hardened session logout and frontend auth-state reset behavior.",

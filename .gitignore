@@ -28,3 +28,4 @@ Thumbs.db
 # Uploaded files (optional, if you don’t want them on GitHub)
 static/uploads/
 flask_task_manager_project/
+ROOT_INFO.txt
