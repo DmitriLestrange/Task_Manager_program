@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.20.3",
+    "date": "2026-04-28",
+    "description": "Switched production PostgreSQL persistence to Render's DATABASE_URL with psycopg2-binary.",
+    "highlights": [
+      "Render deployments now prefer psycopg2-binary for PostgreSQL connections while still using local SQLite when DATABASE_URL is absent.",
+      "The shared database helper keeps translating SQLite-style placeholders to PostgreSQL placeholders so existing routes and Socket.IO flows continue to work.",
+      "PostgreSQL schema initialization continues to use schema_postgres.sql and ensure_db creates missing production tables on startup."
+    ]
+  },
+  {
     "version": "1.20.2",
     "date": "2026-04-28",
     "description": "Tightened production database and session handling for Render deployments.",

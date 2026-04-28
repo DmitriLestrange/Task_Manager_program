@@ -1,5 +1,5 @@
 Flask==3.0.3
 Flask-SocketIO==5.3.6
-psycopg[binary]==3.2.3
+psycopg2-binary>=2.9,<3
 gunicorn>=22,<24
 eventlet>=0.36,<0.40

@@ -8,9 +8,16 @@ from typing import Any
 from .shared import DATABASE_URL, DB_DIR, DB_PATH, IS_POSTGRES, POSTGRES_SCHEMA_PATH, SCHEMA_PATH
 
 try:
+    import psycopg2
+    from psycopg2.extras import RealDictCursor
+except ImportError:  # pragma: no cover - handled by runtime environment
+    psycopg2 = None
+    RealDictCursor = None
+
+try:
     import psycopg
     from psycopg.rows import dict_row
-except ImportError:  # pragma: no cover - handled by runtime environment
+except ImportError:  # pragma: no cover - fallback for older deployments
     psycopg = None
     dict_row = None
 
@@ -224,10 +231,13 @@ def _get_table_columns(conn: Any, table_name: str) -> set[str]:
 
 def get_db() -> SQLiteConnectionCompat | PostgresConnectionCompat:
     if IS_POSTGRES:
-        if psycopg is None:
-            raise RuntimeError("PostgreSQL support requires psycopg to be installed.")
-        connection = psycopg.connect(DATABASE_URL, row_factory=dict_row, connect_timeout=10)
-        return PostgresConnectionCompat(connection)
+        if psycopg2 is not None:
+            connection = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor, connect_timeout=10)
+            return PostgresConnectionCompat(connection)
+        if psycopg is not None:
+            connection = psycopg.connect(DATABASE_URL, row_factory=dict_row, connect_timeout=10)
+            return PostgresConnectionCompat(connection)
+        raise RuntimeError("PostgreSQL support requires psycopg2-binary to be installed.")
 
     DB_DIR.mkdir(exist_ok=True)
     conn = sqlite3.connect(DB_PATH, timeout=10)
